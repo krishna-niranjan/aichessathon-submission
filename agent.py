@@ -182,6 +182,17 @@ class Agent:
         else:
             score -= 10
 
+                # Endgame king activity bonus
+        if phase > 0.5:
+            for color in [chess.WHITE, chess.BLACK]:
+                king_square = board.king(color)
+                if king_square:
+                    center_dist = abs(chess.square_file(king_square) - 3.5) + abs(chess.square_rank(king_square) - 3.5)
+                    bonus = (7 - center_dist) * 10 * phase
+                    if color == chess.WHITE:
+                        score += bonus
+                    else:
+                        score -= bonus
         return score
 
     # -----------------------------------------------------------------
@@ -212,7 +223,7 @@ class Agent:
     # -----------------------------------------------------------------
 
     def search(self, board, depth, alpha, beta, maximizing, start_time, time_limit):
-        if time.time() - start_time > time_limit:
+        if time.time() - start_time > time_limit*0.95:
             return self.evaluate(board), None
 
         if board.is_game_over():
@@ -331,7 +342,7 @@ class Agent:
 
         best_move = None
 
-        for depth in range(1, 8):
+        for depth in range(1, 10):
             _, move = self.search(
                 board,
                 depth,
@@ -362,6 +373,11 @@ if __name__ == "__main__":
     board = chess.Board()
     print(agent.get_move(board.fen(), 90000))
 
-    # Harness entry point
+# Harness entry point
+_agent = None
+
 def get_move(fen: str, time_left_ms: int) -> str:
-    return Agent().get_move(fen, time_left_ms)
+    global _agent
+    if _agent is None:
+        _agent = Agent()
+    return _agent.get_move(fen, time_left_ms)
