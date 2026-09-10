@@ -1,1 +1,1 @@
-My AI Chessathon submission
+My AIChessathon submission

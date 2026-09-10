@@ -582,6 +582,18 @@ class Agent:
                         best_move = alt
                         break
 
+        # Record the position we're about to create (opponent to move), so
+        # the next call's repetition check has this position's prior
+        # occurrences to compare against. position_history covers every
+        # position that has actually occurred in this game: our-turn
+        # positions via the top-of-function record_position() call, and
+        # opponent-turn positions via this one. Since turns strictly
+        # alternate, every real position is one of these two categories.
+        if best_move is not None:
+            board.push(best_move)
+            self.record_position(board)
+            board.pop()
+
         return best_move.uci() if best_move else None
 
 
