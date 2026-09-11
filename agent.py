@@ -564,6 +564,8 @@ class Agent:
 
         # Repetition avoidance when we're clearly ahead.
         # Negamax score is already from our perspective.
+        """
+        #Removed anti-repetiton logic, converts drawing situations into loseses when ahead, would rather take the draw.
         if prev_score > 50:
             board.push(best_move)
             would_repeat = self.repetition_count(board) >= 2
@@ -581,6 +583,7 @@ class Agent:
                     if not repeats:
                         best_move = alt
                         break
+        """
 
         # Record the position we're about to create (opponent to move), so
         # the next call's repetition check has this position's prior
