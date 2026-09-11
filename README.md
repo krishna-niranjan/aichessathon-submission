@@ -1,4 +1,4 @@
-### My AIChessathon submission
+# My AIChessathon submission
 
 A complete chess engine written in Python for the AI chessathon.
 
